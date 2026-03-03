@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lyrics Overlay Pro</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Satisfy&family=Allura&family=Tangerine:wght@400;700&family=Pinyon+Script&family=Sacramento&family=Alex+Brush&family=Parisienne&family=Marck+Script&family=Italianno&family=Euphoria+Script&family=Courgette&family=Kaushan+Script&family=Mr+Dafoe&family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,400;1,600;1,700&family=Raleway:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Nunito:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Quicksand:wght@300;500;700&family=Josefin+Sans:ital,wght@0,300;0,700;1,300;1,700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300;1,700&family=Bodoni+Moda:ital,wght@0,400;0,900;1,400;1,900&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=Oswald:wght@300;400;600;700&family=Abril+Fatface&family=Barlow+Condensed:ital,wght@0,300;0,700;0,900;1,700&family=Black+Han+Sans&family=Cinzel:wght@400;700;900&family=Righteous&family=Exo+2:ital,wght@0,700;0,900;1,700&family=Rajdhani:wght@300;600;700&family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Satisfy&family=Allura&family=Tangerine:wght@400;700&family=Pinyon+Script&family=Sacramento&family=Alex+Brush&family=Parisienne&family=Marck+Script&family=Italianno&family=Euphoria+Script&family=Courgette&family=Kaushan+Script&family=Mr+Dafoe&family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;900&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@300;400;500;700&family=Outfit:wght@300;400;600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Nunito:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Quicksand:wght@300;500;700&family=Josefin+Sans:ital,wght@0,300;0,700;1,300;1,700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300;1,700&family=Bodoni+Moda:ital,wght@0,400;0,900;1,400;1,900&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=Oswald:wght@300;400;600;700&family=Abril+Fatface&family=Barlow+Condensed:ital,wght@0,300;0,700;0,900;1,700&family=Black+Han+Sans&family=Cinzel:wght@400;700;900&family=Righteous&family=Exo+2:ital,wght@0,700;0,900;1,700&family=Rajdhani:wght@300;600;700&family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap"
     rel="stylesheet">
   <style>
     *,
@@ -441,11 +441,12 @@
     }
 
     .drow label {
-      font-size: 9px;
+      font-size: 8.5px;
       font-weight: 800;
       color: var(--muted);
-      letter-spacing: .1em;
+      letter-spacing: .08em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .drow input {
@@ -819,11 +820,21 @@ I said, ooh, I'm drowning in the night
 Oh, when I'm like this, you're the one I trust
 (Hey, hey, hey)"></textarea>
           <div class="drow">
-            <div><label>Minutes</label><input type="number" id="MI" min="0" max="60" value="3"></div>
-            <div><label>Seconds</label><input type="number" id="SE" min="0" max="59" value="45"></div>
+            <div>
+              <label>BPM</label>
+              <input type="number" id="BPM" min="40" max="300" value="120" placeholder="120">
+            </div>
+            <div>
+              <label>Duration (ms)</label>
+              <input type="number" id="DUR" min="1000" step="500" value="225000" placeholder="225000">
+            </div>
             <div><label>Lines</label><input type="number" id="LC" readonly></div>
           </div>
-          <div class="mb">Each line: <strong id="PL">—</strong></div>
+          <div class="mb" style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px">
+            <span>Total: <strong id="DUR_FMT">3:45</strong></span>
+            <span>ms / beat: <strong id="MS_BEAT">500</strong></span>
+            <span>ms / line: <strong id="PL">—</strong></span>
+          </div>
         </div>
 
         <div class="panel" style="display:flex;flex-direction:column">
@@ -882,7 +893,7 @@ Oh, when I'm like this, you're the one I trust
 
     /* ── DATA ── */
     const THEMES = [
-      { id: 'dark', n: 'Dark', bg: '#000', bgT: 'black', cA: '#fff', cD: '#fff', gC: '#f5c842', gI: 40, font: "'Poppins',sans-serif", w: '700', it: false },
+      { id: 'dark', n: 'Dark', bg: '#000', bgT: 'black', cA: '#fff', cD: '#fff', gC: '#f5c842', gI: 40, font: "'Montserrat',sans-serif", w: '700', it: false },
       { id: 'rose', n: 'Rose', bg: '#000', bgT: 'black', cA: '#ffc2d4', cD: '#ff85a1', gC: '#ff4d8e', gI: 60, font: "'Great Vibes',cursive", w: '400', it: false },
       { id: 'gold', n: 'Gold', bg: '#000', bgT: 'black', cA: '#ffd700', cD: '#f5a623', gC: '#ffd700', gI: 55, font: "'Cinzel',serif", w: '700', it: false },
       { id: 'cyan', n: 'Cyan', bg: '#000', bgT: 'black', cA: '#00ffcc', cD: '#00ff88', gC: '#00ffcc', gI: 70, font: "'Orbitron',sans-serif", w: '700', it: false },
@@ -903,56 +914,62 @@ Oh, when I'm like this, you're the one I trust
     ];
 
     const FCATS = {
-      Script: [
-        { n: 'Great Vibes', c: "'Great Vibes',cursive", p: 'Lyrics' },
-        { n: 'Pacifico', c: "'Pacifico',cursive", p: 'Song' },
-        { n: 'Satisfy', c: "'Satisfy',cursive", p: 'Verse' },
-        { n: 'Allura', c: "'Allura',cursive", p: 'Lyrics' },
-        { n: 'Tangerine', c: "'Tangerine',cursive", p: 'Song' },
-        { n: 'Pinyon', c: "'Pinyon Script',cursive", p: 'Verse' },
-        { n: 'Sacramento', c: "'Sacramento',cursive", p: 'Lyrics' },
-        { n: 'Alex Brush', c: "'Alex Brush',cursive", p: 'Song' },
-        { n: 'Parisienne', c: "'Parisienne',cursive", p: 'Verse' },
-        { n: 'Marck Script', c: "'Marck Script',cursive", p: 'Lyrics' },
-        { n: 'Italianno', c: "'Italianno',cursive", p: 'Song' },
-        { n: 'Euphoria', c: "'Euphoria Script',cursive", p: 'Verse' },
-        { n: 'Courgette', c: "'Courgette',cursive", p: 'Lyrics' },
-        { n: 'Kaushan', c: "'Kaushan Script',cursive", p: 'Song' },
-        { n: 'Mr Dafoe', c: "'Mr Dafoe',cursive", p: 'Verse' },
+      Instagram: [
+        { n: 'Inter',           c: "'Inter',sans-serif",           p: 'Aa' },
+        { n: 'Montserrat',      c: "'Montserrat',sans-serif",       p: 'Aa' },
+        { n: 'Lato',            c: "'Lato',sans-serif",             p: 'Aa' },
+        { n: 'DM Sans',         c: "'DM Sans',sans-serif",          p: 'Aa' },
+        { n: 'Space Grotesk',   c: "'Space Grotesk',sans-serif",    p: 'Aa' },
+        { n: 'Outfit',          c: "'Outfit',sans-serif",           p: 'Aa' },
+        { n: 'Plus Jakarta',    c: "'Plus Jakarta Sans',sans-serif", p: 'Aa' },
+        { n: 'Poppins',         c: "'Poppins',sans-serif",          p: 'Aa' },
+        { n: 'Raleway',         c: "'Raleway',sans-serif",          p: 'Aa' },
+        { n: 'Nunito',          c: "'Nunito',sans-serif",           p: 'Aa' },
+        { n: 'Quicksand',       c: "'Quicksand',sans-serif",        p: 'Aa' },
+        { n: 'Josefin Sans',    c: "'Josefin Sans',sans-serif",     p: 'Aa' },
       ],
-      Modern: [
-        { n: 'Poppins', c: "'Poppins',sans-serif", p: 'Aa' },
-        { n: 'Raleway', c: "'Raleway',sans-serif", p: 'Aa' },
-        { n: 'Nunito', c: "'Nunito',sans-serif", p: 'Aa' },
-        { n: 'Quicksand', c: "'Quicksand',sans-serif", p: 'Aa' },
-        { n: 'Josefin', c: "'Josefin Sans',sans-serif", p: 'Aa' },
-        { n: 'Barlow', c: "'Barlow Condensed',sans-serif", p: 'Aa' },
-        { n: 'Exo 2', c: "'Exo 2',sans-serif", p: 'Aa' },
-        { n: 'Rajdhani', c: "'Rajdhani',sans-serif", p: 'Aa' },
-        { n: 'Oswald', c: "'Oswald',sans-serif", p: 'Aa' },
-        { n: 'Orbitron', c: "'Orbitron',sans-serif", p: 'Aa' },
+      Script: [
+        { n: 'Great Vibes', c: "'Great Vibes',cursive",    p: 'Lyrics' },
+        { n: 'Pacifico',    c: "'Pacifico',cursive",        p: 'Song'   },
+        { n: 'Satisfy',     c: "'Satisfy',cursive",         p: 'Verse'  },
+        { n: 'Allura',      c: "'Allura',cursive",           p: 'Lyrics' },
+        { n: 'Tangerine',   c: "'Tangerine',cursive",        p: 'Song'   },
+        { n: 'Pinyon',      c: "'Pinyon Script',cursive",    p: 'Verse'  },
+        { n: 'Sacramento',  c: "'Sacramento',cursive",       p: 'Lyrics' },
+        { n: 'Alex Brush',  c: "'Alex Brush',cursive",       p: 'Song'   },
+        { n: 'Parisienne',  c: "'Parisienne',cursive",       p: 'Verse'  },
+        { n: 'Marck Script',c: "'Marck Script',cursive",     p: 'Lyrics' },
+        { n: 'Italianno',   c: "'Italianno',cursive",        p: 'Song'   },
+        { n: 'Euphoria',    c: "'Euphoria Script',cursive",  p: 'Verse'  },
+        { n: 'Courgette',   c: "'Courgette',cursive",        p: 'Lyrics' },
+        { n: 'Kaushan',     c: "'Kaushan Script',cursive",   p: 'Song'   },
+        { n: 'Mr Dafoe',    c: "'Mr Dafoe',cursive",         p: 'Verse'  },
       ],
       Elegant: [
-        { n: 'Playfair', c: "'Playfair Display',serif", p: 'Aa' },
-        { n: 'Cormorant', c: "'Cormorant Garamond',serif", p: 'Aa' },
-        { n: 'Bodoni Moda', c: "'Bodoni Moda',serif", p: 'Aa' },
-        { n: 'DM Serif', c: "'DM Serif Display',serif", p: 'Aa' },
-        { n: 'Libre Bask.', c: "'Libre Baskerville',serif", p: 'Aa' },
-        { n: 'Cinzel', c: "'Cinzel',serif", p: 'Aa' },
+        { n: 'Playfair',     c: "'Playfair Display',serif",    p: 'Aa' },
+        { n: 'Cormorant',    c: "'Cormorant Garamond',serif",  p: 'Aa' },
+        { n: 'Bodoni Moda',  c: "'Bodoni Moda',serif",         p: 'Aa' },
+        { n: 'DM Serif',     c: "'DM Serif Display',serif",    p: 'Aa' },
+        { n: 'Libre Bask.',  c: "'Libre Baskerville',serif",   p: 'Aa' },
+        { n: 'Cinzel',       c: "'Cinzel',serif",              p: 'Aa' },
       ],
       Display: [
-        { n: 'Bebas Neue', c: "'Bebas Neue',cursive", p: 'Aa' },
-        { n: 'Abril', c: "'Abril Fatface',cursive", p: 'Aa' },
-        { n: 'Black Han', c: "'Black Han Sans',sans-serif", p: 'Aa' },
-        { n: 'Righteous', c: "'Righteous',cursive", p: 'Aa' },
-        { n: 'Press Start', c: "'Press Start 2P',cursive", p: 'Aa' },
+        { n: 'Bebas Neue',   c: "'Bebas Neue',cursive",                p: 'Aa' },
+        { n: 'Barlow Cond.', c: "'Barlow Condensed',sans-serif",       p: 'Aa' },
+        { n: 'Oswald',       c: "'Oswald',sans-serif",                 p: 'Aa' },
+        { n: 'Abril',        c: "'Abril Fatface',cursive",             p: 'Aa' },
+        { n: 'Black Han',    c: "'Black Han Sans',sans-serif",         p: 'Aa' },
+        { n: 'Righteous',    c: "'Righteous',cursive",                 p: 'Aa' },
+        { n: 'Exo 2',        c: "'Exo 2',sans-serif",                  p: 'Aa' },
+        { n: 'Orbitron',     c: "'Orbitron',sans-serif",               p: 'Aa' },
+        { n: 'Press Start',  c: "'Press Start 2P',cursive",            p: 'Aa' },
       ],
     };
 
     /* ── STATE ── */
     let lyrics = [], totalSec = 0, elapsed = 0;
     let playing = false, ticker = null, recMode = false;
-    let selFont = FCATS.Script[0].c, selWeight = '600', selCat = 'Script';
+    let selFont = FCATS.Instagram[1].c, selWeight = '700', selCat = 'Instagram';
     let activeIdx = 0;
     let pvIdx = 0, pvTimer = null;
     const SAMPLE = [
@@ -1028,8 +1045,8 @@ Oh, when I'm like this, you're the one I trust
     });
 
     document.getElementById('LY').addEventListener('input', () => { updateMeta(); pvRebuild(); });
-    document.getElementById('MI').addEventListener('input', updateMeta);
-    document.getElementById('SE').addEventListener('input', updateMeta);
+    document.getElementById('BPM').addEventListener('input', () => { onBpmChange(); pvRebuild(); });
+    document.getElementById('DUR').addEventListener('input', () => { onDurChange(); pvRebuild(); });
 
     /* ── THEME APPLY ── */
     function applyTheme(t) {
@@ -1086,15 +1103,43 @@ Oh, when I'm like this, you're the one I trust
       };
     }
     function getLines() { return document.getElementById('LY').value.split('\n').map(l => l.trim()).filter(Boolean); }
-    function getTot() { return (parseInt(document.getElementById('MI').value) || 0) * 60 + (parseInt(document.getElementById('SE').value) || 0); }
+    function getTot() { return Math.max(1, Math.round(+document.getElementById('DUR').value / 1000)); }
     function fmt(s) { const ss = Math.floor(s); return `${Math.floor(ss / 60)}:${(ss % 60).toString().padStart(2, '0')}`; }
+    function fmtMs(ms) { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`; }
     function getIdxAt(t) { return Math.min(Math.floor(t / (totalSec / lyrics.length)), lyrics.length - 1); }
 
+    /* BPM and ms are linked — changing one updates the other */
+    function onBpmChange() {
+      const bpm = Math.max(1, +document.getElementById('BPM').value || 120);
+      const msPerBeat = Math.round(60000 / bpm);
+      // Keep total duration, update ms/beat display only
+      document.getElementById('MS_BEAT').textContent = msPerBeat;
+      updateMeta();
+    }
+    function onDurChange() {
+      const ms = Math.max(1000, +document.getElementById('DUR').value || 225000);
+      const bpm = +document.getElementById('BPM').value || 120;
+      document.getElementById('MS_BEAT').textContent = Math.round(60000 / bpm);
+      document.getElementById('DUR_FMT').textContent = fmtMs(ms);
+      updateMeta();
+    }
+
     function updateMeta() {
-      const ls = getLines(), tot = getTot();
+      const ls = getLines();
+      const ms = Math.max(1000, +document.getElementById('DUR').value || 225000);
+      const bpm = Math.max(1, +document.getElementById('BPM').value || 120);
+      const msPerBeat = Math.round(60000 / bpm);
       document.getElementById('LC').value = ls.length || '';
-      if (ls.length && tot) { const p = tot / ls.length; document.getElementById('PL').textContent = p >= 60 ? `${Math.floor(p / 60)}m ${(p % 60).toFixed(1)}s` : `${p.toFixed(1)}s`; }
-      else document.getElementById('PL').textContent = '—';
+      document.getElementById('MS_BEAT').textContent = msPerBeat;
+      document.getElementById('DUR_FMT').textContent = fmtMs(ms);
+      if (ls.length && ms) {
+        const msPerLine = Math.round(ms / ls.length);
+        document.getElementById('PL').textContent = msPerLine >= 1000
+          ? `${(msPerLine / 1000).toFixed(2)}s (${(msPerLine / msPerBeat).toFixed(1)} beats)`
+          : `${msPerLine}ms`;
+      } else {
+        document.getElementById('PL').textContent = '—';
+      }
     }
 
     /* ════════════════════════════════════════
@@ -1282,7 +1327,7 @@ Oh, when I'm like this, you're the one I trust
 
       // Apply initial styles (no animation)
       activeIdx = 0; elapsed = 0; playing = false;
-      document.getElementById('PB').textContent = '▶ Play';
+      document.getElementById('PB').textContent = 'Play';
       document.getElementById('setupPage').style.display = 'none';
       document.getElementById('playerPage').classList.add('active');
 
@@ -1339,8 +1384,8 @@ Oh, when I'm like this, you're the one I trust
     });
 
     /* ── INIT ── */
-    applyTheme(THEMES.find(t => t.id === 'rose'));
-    updateMeta();
+    applyTheme(THEMES.find(t => t.id === 'dark'));
+    onDurChange();
     pvRebuild();
   </script>
 </body>
