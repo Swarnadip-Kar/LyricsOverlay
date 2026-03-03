@@ -822,17 +822,16 @@ Oh, when I'm like this, you're the one I trust
           <div class="drow">
             <div>
               <label>BPM</label>
-              <input type="number" id="BPM" min="40" max="300" value="120" placeholder="120">
+              <input type="number" id="BPM" min="40" max="300" value="120">
             </div>
             <div>
-              <label>Duration (ms)</label>
-              <input type="number" id="DUR" min="1000" step="500" value="225000" placeholder="225000">
+              <label>ms / beat</label>
+              <input type="number" id="MSBEAT" min="200" max="1500" value="500">
             </div>
             <div><label>Lines</label><input type="number" id="LC" readonly></div>
           </div>
           <div class="mb" style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px">
-            <span>Total: <strong id="DUR_FMT">3:45</strong></span>
-            <span>ms / beat: <strong id="MS_BEAT">500</strong></span>
+            <span>Total duration: <strong id="DUR_FMT">—</strong></span>
             <span>ms / line: <strong id="PL">—</strong></span>
           </div>
         </div>
@@ -1045,8 +1044,16 @@ Oh, when I'm like this, you're the one I trust
     });
 
     document.getElementById('LY').addEventListener('input', () => { updateMeta(); pvRebuild(); });
-    document.getElementById('BPM').addEventListener('input', () => { onBpmChange(); pvRebuild(); });
-    document.getElementById('DUR').addEventListener('input', () => { onDurChange(); pvRebuild(); });
+    document.getElementById('BPM').addEventListener('input', function () {
+      const bpm = Math.max(1, +this.value || 120);
+      document.getElementById('MSBEAT').value = Math.round(60000 / bpm);
+      updateMeta(); pvRebuild();
+    });
+    document.getElementById('MSBEAT').addEventListener('input', function () {
+      const ms = Math.max(1, +this.value || 500);
+      document.getElementById('BPM').value = Math.round(60000 / ms);
+      updateMeta(); pvRebuild();
+    });
 
     /* ── THEME APPLY ── */
     function applyTheme(t) {
@@ -1103,43 +1110,19 @@ Oh, when I'm like this, you're the one I trust
       };
     }
     function getLines() { return document.getElementById('LY').value.split('\n').map(l => l.trim()).filter(Boolean); }
-    function getTot() { return Math.max(1, Math.round(+document.getElementById('DUR').value / 1000)); }
+    // Total duration is always derived: lines × ms/beat
+    function getMsPerBeat() { return Math.max(1, +document.getElementById('MSBEAT').value || 500); }
+    function getTot() { return Math.max(1, Math.round(getLines().length * getMsPerBeat() / 1000)); }
     function fmt(s) { const ss = Math.floor(s); return `${Math.floor(ss / 60)}:${(ss % 60).toString().padStart(2, '0')}`; }
-    function fmtMs(ms) { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`; }
     function getIdxAt(t) { return Math.min(Math.floor(t / (totalSec / lyrics.length)), lyrics.length - 1); }
-
-    /* BPM and ms are linked — changing one updates the other */
-    function onBpmChange() {
-      const bpm = Math.max(1, +document.getElementById('BPM').value || 120);
-      const msPerBeat = Math.round(60000 / bpm);
-      // Keep total duration, update ms/beat display only
-      document.getElementById('MS_BEAT').textContent = msPerBeat;
-      updateMeta();
-    }
-    function onDurChange() {
-      const ms = Math.max(1000, +document.getElementById('DUR').value || 225000);
-      const bpm = +document.getElementById('BPM').value || 120;
-      document.getElementById('MS_BEAT').textContent = Math.round(60000 / bpm);
-      document.getElementById('DUR_FMT').textContent = fmtMs(ms);
-      updateMeta();
-    }
 
     function updateMeta() {
       const ls = getLines();
-      const ms = Math.max(1000, +document.getElementById('DUR').value || 225000);
-      const bpm = Math.max(1, +document.getElementById('BPM').value || 120);
-      const msPerBeat = Math.round(60000 / bpm);
+      const msPerBeat = getMsPerBeat();
+      const totalMs = ls.length * msPerBeat;
       document.getElementById('LC').value = ls.length || '';
-      document.getElementById('MS_BEAT').textContent = msPerBeat;
-      document.getElementById('DUR_FMT').textContent = fmtMs(ms);
-      if (ls.length && ms) {
-        const msPerLine = Math.round(ms / ls.length);
-        document.getElementById('PL').textContent = msPerLine >= 1000
-          ? `${(msPerLine / 1000).toFixed(2)}s (${(msPerLine / msPerBeat).toFixed(1)} beats)`
-          : `${msPerLine}ms`;
-      } else {
-        document.getElementById('PL').textContent = '—';
-      }
+      document.getElementById('DUR_FMT').textContent = ls.length ? fmt(totalMs / 1000) : '—';
+      document.getElementById('PL').textContent = ls.length ? `${msPerBeat}ms` : '—';
     }
 
     /* ════════════════════════════════════════
@@ -1310,7 +1293,6 @@ Oh, when I'm like this, you're the one I trust
       lyrics = getLines();
       if (!lyrics.length) { alert('Paste lyrics first!'); return; }
       totalSec = getTot();
-      if (!totalSec) { alert('Set track duration!'); return; }
 
       const c = getCfg();
       const tape = document.getElementById('tape');
@@ -1385,7 +1367,7 @@ Oh, when I'm like this, you're the one I trust
 
     /* ── INIT ── */
     applyTheme(THEMES.find(t => t.id === 'dark'));
-    onDurChange();
+    updateMeta();
     pvRebuild();
   </script>
 </body>
