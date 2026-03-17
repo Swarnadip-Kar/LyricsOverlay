@@ -2,7 +2,7 @@
 
 A single-file browser tool that generates a **YouTube Music–style scrolling lyrics overlay** for use in video editors like DaVinci Resolve. No installation, no server, no build step — open `index.html` and go.
 
-**[Live Demo →](https://YOUR_USERNAME.github.io/lyrics-overlay)**
+**[Live Demo →](https://swarnadip-kar.github.io/LyricsOverlay/)**
 
 ---
 
@@ -132,16 +132,13 @@ lyrics-overlay/
 
 ### GitHub Pages (free, instant)
 ```bash
-git init
-git add .
-git commit -m "Initial release"
-git remote add origin https://github.com/YOUR_USERNAME/lyrics-overlay.git
+git remote add origin https://github.com/Swarnadip-Kar/LyricsOverlay.git
 git branch -M main
 git push -u origin main
 ```
 Then: **GitHub repo → Settings → Pages → Source: main / root**
 
-Your app will be live at `https://YOUR_USERNAME.github.io/lyrics-overlay`
+Your app is live at `https://swarnadip-kar.github.io/LyricsOverlay/`
 
 ---
 
